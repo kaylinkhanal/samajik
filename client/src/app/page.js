@@ -20,10 +20,17 @@ export default function LoginPage() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(values)
+      handleSubmit(values)
       // Handle form submission here
     },
   })
+  const handleSubmit  = async()=>{
+    try{
+
+    }catch(err){
+      console.log(err)
+    }
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">

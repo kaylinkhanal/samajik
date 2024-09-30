@@ -64,4 +64,14 @@ const findUserById = async (req, res) => {
     })
   }
 
-  module.exports = {registerUser,loginUser,findAllUser,findUserById,deleteUserById,updateUserById}
+
+  const uploadUser = async (req, res)=>{
+    const user = await User.findById(req.params.id)
+    user.avatar = req.file.filename
+    user.save()
+    res.json({
+      msg: "Avatar Upload Success"
+    })
+  }
+
+  module.exports = {registerUser,loginUser,uploadUser,findAllUser,findUserById,deleteUserById,updateUserById}
