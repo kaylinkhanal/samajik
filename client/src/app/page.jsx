@@ -7,6 +7,8 @@ import axios from "axios"
 import { useFormik } from 'formik'
 import { useRouter } from "next/navigation"
 import * as Yup from 'yup'
+import { setIsLoggedIn, setUser } from "./providers/redux/store/slices/userSlice"
+import { useDispatch } from "react-redux"
 
 const validationSchema = Yup.object({
   email: Yup.string().email('Invalid email address').required('Email is required'),
@@ -15,6 +17,7 @@ const validationSchema = Yup.object({
 
 export default function LoginPage() {
   const router = useRouter()
+  const dispatch = useDispatch()
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -25,8 +28,11 @@ export default function LoginPage() {
       try {
         const { data: { isLoggedIn, user, token } } = await axios.post(`http://localhost:8080/login`, values)
         console.log({ isLoggedIn, user, token })
-        if (isLoggedIn) { router.push("/home") }
-
+        if (isLoggedIn) {
+          dispatch(setIsLoggedIn(isLoggedIn));
+          dispatch(setUser(user));
+          router.push("/home")
+        }
       } catch (err) {
         console.log("unable to log in", err)
       }
