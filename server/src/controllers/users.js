@@ -73,7 +73,30 @@ const updateUserById = async (req, res) => {
     })
     console.log(error)
   }
-
 }
 
-module.exports = { registerUser, loginUser, findAllUser, findUserById, deleteUserById, updateUserById }
+//req.params /
+//req.query ?
+//req.body {}
+//req.file
+  const uploadUser = async (req, res)=>{
+    const user = await User.findById(req.params.id)
+    if(!user){
+        return res.status(404).send('User Id is invalid')
+    }
+    user.avatar = req.file.filename
+    user.save()
+    res.json({
+      msg: "Avatar Upload Success"
+    })
+  }
+
+  module.exports = {
+    registerUser,
+    loginUser,
+    uploadUser,
+    findAllUser,
+    findUserById,
+    deleteUserById,
+    updateUserById
+  }
