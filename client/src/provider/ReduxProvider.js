@@ -1,7 +1,11 @@
 'use client'
 
+import { store } from "@/redux/store/index"
+
+
+
 const { Provider } = require("react-redux")
-const { store } = require("./store")
+
 
 const ReduxProvider = ({ children }) =>
   <Provider store={store}>

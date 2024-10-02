@@ -10,7 +10,8 @@ const User = mongoose.model('User', {
     },
     dateOfBirth: String,
     password: String,
-    phoneNumber: String
+    phoneNumber: String,
+    avatar: String
  });
 
 

@@ -1,6 +1,9 @@
 import localFont from "next/font/local";
 import "./globals.css";
-import ReduxProvider from "./providers/redux/provider";
+import TanStackProvider from "@/provider/TanStackProvider";
+import ReduxProvider from "@/provider/ReduxProvider";
+
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -17,15 +20,18 @@ export const metadata = {
   description: "A Nepali social media platform for networking and connecting with like-minded individuals in your industry and interests.",
 };
 
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <TanStackProvider>
         <ReduxProvider>
           {children}
         </ReduxProvider>
+        </TanStackProvider>
       </body>
     </html>
   );
