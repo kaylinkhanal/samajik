@@ -2,6 +2,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import TanStackProvider from "@/provider/TanStackProvider";
 import ReduxProvider from "@/provider/ReduxProvider";
+import AuthProvider from "@/provider/AuthProvider";
 
 
 const geistSans = localFont({
@@ -28,9 +29,11 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <TanStackProvider>
-        <ReduxProvider>
-          {children}
-        </ReduxProvider>
+          <ReduxProvider>
+            <AuthProvider>
+              {children}
+            </AuthProvider>
+          </ReduxProvider>
         </TanStackProvider>
       </body>
     </html>

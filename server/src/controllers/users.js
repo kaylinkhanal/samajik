@@ -21,20 +21,41 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   const user = await User.findOne({ email: req.body.email })
-  if (!user) {
-    return res.status(401).send({ msg: 'Invalid email!' })
-  }
+  if (!user) return res.status(401).send({ msg: 'Invalid email!' })
+
   const isMatched = await bcrypt.compare(req.body.password, user.password);
-  if (isMatched) {
+  if (!isMatched) return res.status(401).send({ msg: 'invalid credentials!' })
+  try {
     const token = jwt.sign({ email: req.body.email }, process.env.SECRET_KEY);
     const newUser = user.toObject()
-    delete newUser.password
-    res.send({ user: newUser, token, isLoggedIn: true })
-  } else {
-    res.status(401).send({ msg: 'invalid credentials!' })
+    res.cookie('token', token, { httpOnly: true, secure: false })
+    return res.send({ user: newUser, isLoggedIn: true })
+  } catch (err) {
+    console.log("unable to sing jwt->", req.body.email, process.env.SECRET_KEY)
+    return res.status(500).send({ msg: 'server error!' })
   }
 }
-
+const logout = async (_, res) => {
+  res.clearCookie('token');
+  res.json(true)
+}
+const verifyCookie = async (req, res) => {
+  const { token } = req.cookies
+  console.log(token)
+  if (!token) return res.json({ isLoggedIn: false })
+  try {
+    const { email } = jwt.verify(token, process.env.SECRET_KEY)
+    if (!email) return res.json({ isLoggedIn: false })
+    const user = await User.findOne({ email })
+    if (!user) return res.json({ isLoggedIn: false })
+    const userObj = user.toObject()
+    delete userObj.password
+    return res.json({ isLoggedIn: true, user: userObj })
+  } catch (err) {
+    console.log(err)
+    return res.json({ isLoggedIn: false })
+  }
+}
 const findAllUser = async (_, res) => {
   const data = await User.find()
   res.send(data)
@@ -79,24 +100,26 @@ const updateUserById = async (req, res) => {
 //req.query ?
 //req.body {}
 //req.file
-  const uploadUser = async (req, res)=>{
-    const user = await User.findById(req.params.id)
-    if(!user){
-        return res.status(404).send('User Id is invalid')
-    }
-    user.avatar = req.file.filename
-    user.save()
-    res.json({
-      msg: "Avatar Upload Success"
-    })
+const uploadUser = async (req, res) => {
+  const user = await User.findById(req.params.id)
+  if (!user) {
+    return res.status(404).send('User Id is invalid')
   }
+  user.avatar = req.file.filename
+  user.save()
+  res.json({
+    msg: "Avatar Upload Success"
+  })
+}
 
-  module.exports = {
-    registerUser,
-    loginUser,
-    uploadUser,
-    findAllUser,
-    findUserById,
-    deleteUserById,
-    updateUserById
-  }
+module.exports = {
+  registerUser,
+  loginUser,
+  uploadUser,
+  findAllUser,
+  findUserById,
+  deleteUserById,
+  updateUserById,
+  verifyCookie,
+  logout
+}

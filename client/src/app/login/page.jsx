@@ -16,7 +16,7 @@ const validationSchema = Yup.object({
 })
 
 export default function LoginPage() {
-    const dispatch = useDispatch()
+  const dispatch = useDispatch()
   const router = useRouter()
   const formik = useFormik({
     initialValues: {
@@ -28,9 +28,9 @@ export default function LoginPage() {
       handleSubmit(values)
     },
   })
-  const handleSubmit  = async(values)=>{
+  const handleSubmit = async (values) => {
     try {
-      const { data } = await axios.post(`http://localhost:8080/login`, values)
+      const { data } = await axios.post(`http://localhost:8080/login`, values, { withCredentials: true })
       if (data.isLoggedIn) { router.push("/home") }
       dispatch(setLogin(data))
     } catch (err) {
