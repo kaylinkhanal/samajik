@@ -64,9 +64,15 @@ const findUserById = async (req, res) => {
     })
   }
 
-
+//req.params /
+//req.query ?
+//req.body {}
+//req.file
   const uploadUser = async (req, res)=>{
     const user = await User.findById(req.params.id)
+    if(!user){
+        return res.status(404).send('User Id is invalid')
+    }
     user.avatar = req.file.filename
     user.save()
     res.json({

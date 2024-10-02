@@ -17,9 +17,14 @@ const storage = multer.diskStorage({
   const upload = multer({ storage: storage })
 
   const checkUserExist =async (req,res,next)=>{
-    const userExist = await User.findById(req.params.id)
-    if(!userExist) return res.status(404).json({msg: "User Doesn't exist"})
-    next()
+    try{
+      const userExist = await User.findById(req.params.id)
+      if(!userExist) return res.status(404).json({msg: "User Doesn't exist"})
+  
+      next()
+    }catch(err){
+      console.log(err)
+    }
   }
 
 UserRoute.post('/register', registerUser)
