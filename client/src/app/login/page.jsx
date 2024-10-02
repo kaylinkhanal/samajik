@@ -1,10 +1,11 @@
 'use client'
-
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import axios from "axios"
 import { useFormik } from 'formik'
+import { useRouter } from "next/navigation"
 import * as Yup from 'yup'
 
 const validationSchema = Yup.object({
@@ -13,6 +14,7 @@ const validationSchema = Yup.object({
 })
 
 export default function LoginPage() {
+  const router = useRouter()
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -21,14 +23,15 @@ export default function LoginPage() {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       handleSubmit(values)
-      // Handle form submission here
     },
   })
-  const handleSubmit  = async()=>{
-    try{
+  const handleSubmit  = async(values)=>{
+    try {
+      const { data: { isLoggedIn, user, token } } = await axios.post(`http://localhost:8080/login`, values)
+      if (isLoggedIn) { router.push("/home") }
 
-    }catch(err){
-      console.log(err)
+    } catch (err) {
+      console.log("unable to log in", err)
     }
   }
 
@@ -43,9 +46,9 @@ export default function LoginPage() {
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input 
-                id="email" 
-                type="email" 
+              <Input
+                id="email"
+                type="email"
                 placeholder="Enter your email"
                 {...formik.getFieldProps('email')}
               />
@@ -55,9 +58,9 @@ export default function LoginPage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input 
-                id="password" 
-                type="password" 
+              <Input
+                id="password"
+                type="password"
                 placeholder="Enter your password"
                 {...formik.getFieldProps('password')}
               />

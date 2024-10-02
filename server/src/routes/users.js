@@ -34,6 +34,6 @@ UserRoute.post('/upload-avatar/:id',checkUserExist, upload.single('avatar'), upl
 UserRoute.get('/users/:id',findUserById)
 UserRoute.delete('/users/:id',deleteUserById )
 UserRoute.put('/users/:id', updateUserById)
-
+UserRoute.delete('/users/:id', deleteUserById)
 
 module.exports = UserRoute;
