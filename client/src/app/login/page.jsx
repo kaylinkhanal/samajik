@@ -3,9 +3,11 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { setLogin } from "@/redux/slices/userSlice"
 import axios from "axios"
 import { useFormik } from 'formik'
 import { useRouter } from "next/navigation"
+import { useDispatch } from "react-redux"
 import * as Yup from 'yup'
 
 const validationSchema = Yup.object({
@@ -14,6 +16,7 @@ const validationSchema = Yup.object({
 })
 
 export default function LoginPage() {
+    const dispatch = useDispatch()
   const router = useRouter()
   const formik = useFormik({
     initialValues: {
@@ -27,9 +30,9 @@ export default function LoginPage() {
   })
   const handleSubmit  = async(values)=>{
     try {
-      const { data: { isLoggedIn, user, token } } = await axios.post(`http://localhost:8080/login`, values)
-      if (isLoggedIn) { router.push("/home") }
-
+      const { data } = await axios.post(`http://localhost:8080/login`, values)
+      if (data.isLoggedIn) { router.push("/home") }
+      dispatch(setLogin(data))
     } catch (err) {
       console.log("unable to log in", err)
     }

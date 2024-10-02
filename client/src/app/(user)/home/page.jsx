@@ -1,7 +1,9 @@
-'use client'
+import React from 'react'
+
 const Home = () => {
   return (
-    <section>home</section>
+    <div>Home</div>
   )
 }
+
 export default Home
