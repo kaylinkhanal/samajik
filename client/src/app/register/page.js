@@ -1,11 +1,12 @@
 'use client'
-
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import axios from "axios"
 import { useFormik } from 'formik'
+import { useRouter } from "next/navigation"
 import * as Yup from 'yup'
 
 const validationSchema = Yup.object({
@@ -18,6 +19,7 @@ const validationSchema = Yup.object({
 })
 
 export default function Register() {
+  const router = useRouter()
   const formik = useFormik({
     initialValues: {
       fullName: '',
@@ -28,9 +30,15 @@ export default function Register() {
       phoneNumber: ''
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      console.log(values)
+    onSubmit: async (values) => {
       // Handle form submission here
+      try {
+        const { data: { msg }, status } = await axios.post(`http://localhost:8080/register`, values)
+        if (status == 200) { router.push("/") }
+        console.log({ msg, status })
+      } catch (err) {
+        console.log("err:", err)
+      }
     },
   })
 
