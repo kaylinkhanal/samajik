@@ -1,17 +1,18 @@
 'use client'
+import UploadImages from '@/components/ImageUploads/page';
 import { ProfileSkeletonWithCover } from '@/components/profile-skeleton-with-cover';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 const Profile=()=> {
-    const { isPending, error, data } = useQuery({
-      queryKey: ['repoData'],
-      queryFn: () =>
-      axios('http://localhost:8080/users')
-    })
+    // const { isPending, error, data } = useQuery({
+    //   queryKey: ['repoData'],
+    //   queryFn: () =>
+    //   axios('http://localhost:8080/users')
+    // })
   
-    if (isPending) return <ProfileSkeletonWithCover/>
+    // if (isPending) return <ProfileSkeletonWithCover/>
   
-    if (error) return 'An error has occurred: ' + error.message
+    // if (error) return 'An error has occurred: ' + error.message
     const uploadAvatar = async(e) => {
       const formData = new FormData()
       formData.append('avatar', e.target.files[0])
@@ -20,7 +21,7 @@ const Profile=()=> {
   
     return (
       <div>
-        <input type='file' onChange={uploadAvatar}/>
+        <UploadImages onChange={uploadAvatar}/>
         
       </div>
     )

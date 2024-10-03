@@ -1,6 +1,6 @@
 import UserAvatar from '@/components/avatar'
 import SideBar from '@/components/sideBar'
-import { Avatar } from '@/components/ui/avatar'
+
 import React from 'react'
 
 const UserLayout = ({children}) => {
