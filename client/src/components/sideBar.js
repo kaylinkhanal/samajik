@@ -2,54 +2,33 @@
 import Link from "next/link"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
+import navItems from "@/config/navItems";
 
 export default function SideBar() {
   return (
-    (<div className="flex h-screen w-full bg-muted dark:bg-[#1e1e1e]">
+    (
       <aside
         className="hidden h-full border-r bg-background dark:bg-[#2b2b2b] md:block">
         <div className="flex h-full flex-col justify-between">
           <div className="space-y-6 p-6">
+   
             <Link href="#" className="flex items-center gap-2" prefetch={false}>
               <MountainIcon className="h-6 w-6 text-orange-500" />
               <span className="text-lg font-semibold text-orange-500">Samajik</span>
             </Link>
             <nav className="space-y-1">
-              <Link
-                href="#"
-                className="flex items-center gap-3 rounded-md px-4 py-2 text-sm font-medium text-muted-foreground dark:text-muted-foreground/80 transition-colors hover:bg-accent hover:text-accent-foreground"
-                prefetch={false}>
-                <HomeIcon className="h-5 w-5" />
-                Home
-              </Link>
-              <Link
-                href="#"
-                className="flex items-center gap-3 rounded-md px-4 py-2 text-sm font-medium text-muted-foreground dark:text-muted-foreground/80 transition-colors hover:bg-accent hover:text-accent-foreground"
-                prefetch={false}>
-                <CompassIcon className="h-5 w-5" />
-                Explore
-              </Link>
-              <Link
-                href="#"
-                className="flex items-center gap-3 rounded-md px-4 py-2 text-sm font-medium text-muted-foreground dark:text-muted-foreground/80 transition-colors hover:bg-accent hover:text-accent-foreground"
-                prefetch={false}>
-                <MessageCircleIcon className="h-5 w-5" />
-                Messages
-              </Link>
-              <Link
-                href="#"
-                className="flex items-center gap-3 rounded-md px-4 py-2 text-sm font-medium text-muted-foreground dark:text-muted-foreground/80 transition-colors hover:bg-accent hover:text-accent-foreground"
-                prefetch={false}>
-                <BellIcon className="h-5 w-5" />
-                Notifications
-              </Link>
-              <Link
-                href="#"
-                className="flex items-center gap-3 rounded-md px-4 py-2 text-sm font-medium text-muted-foreground dark:text-muted-foreground/80 transition-colors hover:bg-accent hover:text-accent-foreground"
-                prefetch={false}>
-                <UserIcon className="h-5 w-5" />
-                Profile
-              </Link>
+              {navItems.user.map((item)=>{
+                return (
+                  <Link
+                  href={item.link}
+                  className="flex items-center gap-3 rounded-md px-4 py-2 text-sm font-medium text-muted-foreground dark:text-muted-foreground/80 transition-colors hover:bg-accent hover:text-accent-foreground"
+                  prefetch={false}>
+                  {item.icon}
+                  {item.label}
+                </Link>
+                )
+              })}
+
             </nav>
           </div>
           <div className="border-t px-6 py-4">
@@ -73,15 +52,8 @@ export default function SideBar() {
           </div>
         </div>
       </aside>
-      <div className="flex-1 overflow-auto">
-        <main className="p-6">
-          <h1 className="text-2xl font-bold text-orange-500">Welcome to Samajik App</h1>
-          <p className="text-muted-foreground dark:text-muted-foreground/80">
-            This is the main content area of the application.
-          </p>
-        </main>
-      </div>
-    </div>)
+    
+)
   );
 }
 

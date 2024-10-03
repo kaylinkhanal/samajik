@@ -1,3 +1,4 @@
+'use client'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -8,8 +9,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { setLogout } from "@/redux/slices/userSlice"
+import { useDispatch, useSelector } from "react-redux"
 
 export default function UserAvatar() {
+  const dispatch = useDispatch()
+  const {userDetails} = useSelector(state=>state.user)
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -23,9 +28,9 @@ export default function UserAvatar() {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">shadcn</p>
+            <p className="text-sm font-medium leading-none">{userDetails?.user?.fullName}</p>
             <p className="text-xs leading-none text-muted-foreground">
-              m@example.com
+              {userDetails?.user?.email}
             </p>
           </div>
         </DropdownMenuLabel>
@@ -40,7 +45,7 @@ export default function UserAvatar() {
           Settings
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={()=>dispatch(setLogout())}>
           Log out
         </DropdownMenuItem>
       </DropdownMenuContent>
