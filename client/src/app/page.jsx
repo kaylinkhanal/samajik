@@ -1,10 +1,20 @@
-import React from 'react'
-import LoginPage from './login/page'
+import UserAvatar from '@/components/avatar'
 
-const Main = () => {
+import SideBar from '@/components/sideBar'
+import React from 'react'
+
+const Home = () => {
   return (
-    <LoginPage/>
+    <div><SideBar/>
+    <div className="absolute right-8 top-2 ">
+    <UserAvatar  />
+
+      
+    </div>
+    
+    
+    </div>
   )
 }
 
-export default Main
+export default Home
