@@ -5,16 +5,21 @@ const ProductRoute = require('./routes/products')
 const cors = require('cors')
 const connection = require('./db/connection')
 require('dotenv').config()
-
+const path = require('path')
+const cookieParser = require('cookie-parser')
 connection()
 
-const port = process.env.PORT
+const PORT = process.env.PORT
 
+app.use('/static', express.static(path.join(__dirname, '../uploads')))
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true
+}))
 app.use(express.json())
-app.use(cors())
-app.use(UserRoute)
-app.use(ProductRoute)
+app.use(cookieParser())
+app.use(UserRoute, ProductRoute)
 
-app.listen(port, ()=>{
-    console.log("server is started in port" + port)
+app.listen(PORT, () => {
+  console.log("server is started in port" + PORT)
 })
