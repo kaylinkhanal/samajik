@@ -1,7 +1,6 @@
 'use client';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import LoginPage from './login/page';
 import { useRouter } from 'next/navigation';
 
 const Main = () => {
@@ -11,12 +10,14 @@ const Main = () => {
   useEffect(() => {
     if (isLoggedIn) {
       router.push("/home");
+    } else {
+      router.push("/login");
     }
   }, [isLoggedIn, router]);
 
   return (
     <>
-      {!isLoggedIn && <LoginPage />}
+      loading skeleton
     </>
   );
 }
