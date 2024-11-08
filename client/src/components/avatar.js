@@ -10,17 +10,24 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { setLogout } from "@/redux/slices/userSlice"
+import { useRouter } from "next/navigation"
 import { useDispatch, useSelector } from "react-redux"
 
 export default function UserAvatar() {
   const dispatch = useDispatch()
+  const router = useRouter()
   const {userDetails} = useSelector(state=>state.user)
+
+  const handleLogout = ()=>{
+    dispatch(setLogout())
+    router.push('/')
+  }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-10 w-10 rounded-full">
           <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+            <AvatarImage src={`${process.env.NEXT_PUBLIC_API_URL}/static/avatar/${userDetails?.user?.avatar}`} alt="@shadcn" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
         </Button>
@@ -45,7 +52,7 @@ export default function UserAvatar() {
           Settings
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={()=>dispatch(setLogout())}>
+        <DropdownMenuItem onClick={handleLogout}>
           Log out
         </DropdownMenuItem>
       </DropdownMenuContent>

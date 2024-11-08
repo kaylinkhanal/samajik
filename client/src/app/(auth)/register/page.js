@@ -37,14 +37,14 @@ export default function Register() {
         if (status == 200) { router.push("/") }
         console.log({ msg, status })
       } catch (err) {
+        alert(err?.response?.data?.msg)
         console.log("err:", err)
       }
     },
   })
 
   return (
-    (<div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <Card className="w-full max-w-md">
+    (
         <form onSubmit={formik.handleSubmit}>
           <CardHeader>
             <CardTitle className="text-2xl font-bold">Sign Up</CardTitle>
@@ -109,7 +109,6 @@ export default function Register() {
             <Button type="submit" className="w-full">Sign Up</Button>
           </CardFooter>
         </form>
-      </Card>
-    </div>)
+     )
   );
 }

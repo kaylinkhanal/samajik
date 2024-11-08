@@ -1,20 +1,22 @@
-import UserAvatar from '@/components/avatar'
+'use client'
+import { useSelector } from "react-redux"
 
-import SideBar from '@/components/sideBar'
-import React from 'react'
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 
-const Home = () => {
-  return (
-    <div><SideBar/>
-    <div className="absolute right-8 top-2 ">
-    <UserAvatar  />
 
-      
-    </div>
-    
-    
-    </div>
-  )
+const Main = () => {
+  const {userDetails} = useSelector(state=>state.user)
+  const router = useRouter()
+  useEffect(()=>{
+    if(userDetails?.isLoggedIn) {
+      router.push('/home')
+    }else{
+      router.push('/login')
+    }
+  },[userDetails?.isLoggedIn])
+  
+  return  null
 }
 
-export default Home
+export default Main
