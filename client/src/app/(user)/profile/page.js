@@ -29,10 +29,19 @@ const Profile=()=> {
     return (
       <div>
         <UploadImages onChange={uploadAvatar}/>
+      <div className='flex flex-col w-[30%] bg-black rounded p-2 m-2 text-white'>
+        <span>Phone Number : {userDetails?.user?.phoneNumber}</span>
+        <span>Gender: {userDetails?.user?.gender}</span>
+        <span className='flex'> Skills: {userDetails?.user?.skills?.map((item)=>{
+          return (
+            <div className='p-2 m-2 rounded bg-white text-black w-auto'>
+              {item}
+            </div>
+          )
+        })}</span>
 
-      Phone Number : {userDetails?.user?.phoneNumber}
-       Gender: {userDetails?.user?.gender}
-       Skills: {userDetails?.user?.skills}
+      </div>
+   
 
       </div>
     )
