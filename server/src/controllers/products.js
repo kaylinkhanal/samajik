@@ -1,6 +1,5 @@
 const Product = require("../models/product")
 
-
 const createProduct = async (req, res) => {
     Product.create(req.body)
     res.send("product created!!")
@@ -21,8 +20,7 @@ const createProduct = async (req, res) => {
   }
 
 
-
- const deleteProductById = async (req, res) => {
+ const deleteProductById = async (req, res) => { 
     const data = await Product.findByIdAndDelete(req.params.id)
     res.send({
       msg: `${req.params.id} product deleted!`

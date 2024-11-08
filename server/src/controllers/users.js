@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 
 
 const registerUser = async (req, res) => {
+
   //step 1: check if email is taken
   const emailExists = await User.exists({ email: req.body.email })
   const phoneExists = await User.exists({ phoneNumber: req.body.phoneNumber })
@@ -41,8 +42,8 @@ const findAllUser = async (_, res) => {
 }
 
 const findUserById = async (req, res) => {
-  const data = await User.findById(req.params.id)
-  res.send(data)
+  const user = await User.findById(req.params.id)
+  res.send({user})
 }
 
 const deleteUserById = async (req, res) => {

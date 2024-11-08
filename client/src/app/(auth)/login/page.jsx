@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { setLogin } from "@/redux/slices/userSlice"
+import { setUserDetails } from "@/redux/slices/userSlice"
 import axios from "axios"
 import { useFormik } from 'formik'
 import { useRouter } from "next/navigation"
@@ -32,15 +32,14 @@ export default function LoginPage() {
     try {
       const { data } = await axios.post(`http://localhost:8080/login`, values)
       if (data.isLoggedIn) { router.push("/home") }
-      dispatch(setLogin(data))
+      //send login user data  in redux userSlice
+      dispatch(setUserDetails(data))
     } catch (err) {
       console.log("unable to log in", err)
     }
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <Card className="w-full max-w-md">
         <form onSubmit={formik.handleSubmit}>
           <CardHeader>
             <CardTitle className="text-2xl font-bold">Login</CardTitle>
@@ -76,7 +75,5 @@ export default function LoginPage() {
             <Button type="submit" className="w-full">Login</Button>
           </CardFooter>
         </form>
-      </Card>
-    </div>
   )
 }

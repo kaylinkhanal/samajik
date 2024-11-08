@@ -1,12 +1,15 @@
 
+'use client'
 import Link from "next/link"
+import { useSelector } from "react-redux"
 
-export default function UploadImages() {
+export default function UploadImages(props) {
+  const {userDetails} = useSelector(state=>state.user)
   return (
     <div className="flex flex-col items-center gap-4">
       <div className="relative group w-32 h-32 rounded-full overflow-hidden">
         <img
-          src="/placeholder.svg"
+          src={`${process.env.NEXT_PUBLIC_API_URL}/static/avatar/${userDetails?.user?.avatar}`} 
           alt="Profile Picture"
           width={128}
           height={128}
@@ -21,13 +24,13 @@ export default function UploadImages() {
           <label htmlFor="profile-picture" className="text-white hover:text-primary-foreground cursor-pointer">
             <UploadIcon className="w-6 h-6" />
             <span className="sr-only">Upload New Image</span>
-            <input id="profile-picture" type="file" className="sr-only" accept="image/*" />
+            <input id="profile-picture" type="file" className="sr-only" accept="image/*"  onChange={props.onChange}/>
           </label>
         </div>
       </div>
       <div className="space-y-2 text-center">
-        <h3 className="text-xl font-semibold">John Doe</h3>
-        <p className="text-muted-foreground">Software Engineer</p>
+        <h3 className="text-xl font-semibold">{userDetails?.user?.fullName}</h3>
+        <p className="text-muted-foreground">{userDetails?.user?.email}</p>
       </div>
     </div>
   )
