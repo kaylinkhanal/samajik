@@ -34,8 +34,9 @@ Samajik is a social networking platform for users to connect, share posts, and i
 
 #### Phase 1:
 -------------------
-- [ ] Login/Register
+- [x] Login/Register
 - [ ] Profile:
+  - [ ] Profile Info
   - [ ] View My Posts
   - [ ] List of Followers
 - [ ] Settings:
