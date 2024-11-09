@@ -68,7 +68,7 @@ Samajik is a social networking platform for users to connect, share posts, and i
 
 Technologies Used:
 -------------
-- Frontend: Nextjs, TailwindCss, Shadcn-ui
+- Frontend: Nextjs, TailwindCss, Shadcn-ui, Redux
 - Backend: Node.js, Express.js
 - Database: MongoDB
 - Authentication: JWT, OAuth
