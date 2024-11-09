@@ -26,15 +26,13 @@
 // //   f) Save post
 -->
 
-## Samajik - Social Networking Platform
+# Samajik - Social Networking Platform
 
-### Samajik is a social networking platform for users to connect, share posts, and interact with friends.
+Samajik is a social networking platform for users to connect, share posts, and interact with friends.
 
-===============================================================================
 
-TODO:
 
-##### Phase 1:
+#### Phase 1:
 -------------------
 - [ ] Login/Register
 - [ ] Profile:
@@ -54,7 +52,7 @@ TODO:
 - [ ] Groups:
   - [ ] Create Groups and Add Users
 
-##### Phase 2 :
+#### Phase 2 :
 -------------------
 - [ ] Different Types of Posts:
   - [ ] Normal Post, Poll, Stories, Targeted Post, Tag Followers
@@ -65,10 +63,10 @@ TODO:
 - [ ] Payments Integration
 - [ ] Save Post
 
-===============================================================================
+-------------
 
 Technologies Used:
--------------------
+-------------
 - Frontend: Nextjs, TailwindCss, Shadcn-ui
 - Backend: Node.js, Express.js
 - Database: MongoDB
@@ -76,7 +74,7 @@ Technologies Used:
 - Version Control: Git, GitHub
 - Payment Gateway: Esewa
 
-===============================================================================
+------------
 
 Installation:
 -------------
@@ -88,7 +86,7 @@ Installation:
    ```npm run dev```
 5. Visit `http://localhost:3000` to see the app.
 
-===============================================================================
+-------------
 
 Contributing:
 --------------
@@ -97,4 +95,4 @@ Contributing:
 - Commit and push changes
 - Open a pull request
 
-===============================================================================
+-------------
