@@ -13,7 +13,7 @@ import { setLogout } from "@/redux/slices/userSlice"
 import { useRouter } from "next/navigation"
 import { useDispatch, useSelector } from "react-redux"
 
-export default function UserAvatar() {
+export default function UserAvatar({disabled}) {
   const dispatch = useDispatch()
   const router = useRouter()
   const {userDetails} = useSelector(state=>state.user)
@@ -21,6 +21,14 @@ export default function UserAvatar() {
   const handleLogout = ()=>{
     dispatch(setLogout())
     router.push('/')
+  }
+  if(disabled){
+    return (
+      <Avatar>
+      <AvatarImage src={`${process.env.NEXT_PUBLIC_API_URL}/static/avatar/${userDetails?.user?.avatar}`} alt="@shadcn" />
+      <AvatarFallback>CN</AvatarFallback>
+    </Avatar>
+    )
   }
   return (
     <DropdownMenu>

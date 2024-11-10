@@ -21,6 +21,7 @@
     "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
     "formik": "^2.4.6",
+    "jodit-react": "^4.1.2",
     "lucide-react": "^0.446.0",
     "next": "14.2.13",
     "react": "^18",

@@ -10,7 +10,7 @@ const UserLayout = ({children}) => {
         <div className='absolute right-8 top-2'>
         <UserAvatar/>
         </div>
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1 overflow-auto mt-12">
           <main className="p-6">
              {children}
          </main>

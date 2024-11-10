@@ -1,20 +1,11 @@
 const {Router} = require('express')
+const Post = require('../models/post')
 const app = Router()
-app.get('/posts', (req, res) => {
-    res.send(['ram', 'shyam', 'gita'])
-  })
+
 
   app.post('/posts', (req, res) => {
-    res.send(['ram', 'shyam', 'gita'])
+    Post.create(req.body)
+    res.json({msg: "post created"})
   })
 
-
-  app.put('/posts', (req, res) => {
-    res.send(['ram', 'shyam', 'gita'])
-  })
-
-
-  app.delete('/posts', (req, res) => {
-    res.send(['ram', 'shyam', 'gita'])
-  })
 module.exports = app;
