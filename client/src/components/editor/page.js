@@ -9,6 +9,7 @@ import axios from 'axios';
 
 const PostEditor = ({ placeholder }) => {
 
+    const {userDetails} = useSelector(state=>state.user)
 
 
 
@@ -20,7 +21,7 @@ const PostEditor = ({ placeholder }) => {
 	const editor = useRef(null);
 	const [content, setContent] = useState('');
     const handleSubmit =async ()=>{
-        const { data } = await axios.post(`http://localhost:8080/posts`, {content: content})
+        const { data } = await axios.post(`http://localhost:8080/posts`, {content: content,user:userDetails?.user._id})
         
     }
 
@@ -32,7 +33,6 @@ const PostEditor = ({ placeholder }) => {
 		}),
 		[placeholder]
 	);
-    const {userDetails} = useSelector(state=>state.user)
 	return (
         <>
           <div className='flex flex-col bg-orange-500 rounded-lg'>

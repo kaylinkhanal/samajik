@@ -9,8 +9,9 @@ const app = Router()
   })
 
   app.get('/posts',async (req, res) => {
-   const data = await Post.find()
+   const data = await Post.find().populate("user")
     res.json(data)
   })
 
 module.exports = app;
+

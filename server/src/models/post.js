@@ -1,7 +1,10 @@
 const mongoose  = require("mongoose");
 
 const postSchema = new mongoose.Schema({
-    user_id: { type: String},       // Unique identifier for the user posting
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    },
     content: { type: String, required: true },       // The main content of the post (text, link, etc.)
     image_url: { type: String },                     // URL of the image/video (optional)
     media_type: { type: String, enum: ['image', 'video', 'audio', 'text'] },  // Type of media
@@ -17,7 +20,8 @@ const postSchema = new mongoose.Schema({
     likes_count: { type: Number, default: 0 },       // Number of likes
     comments_count: { type: Number, default: 0 },    // Number of comments
     shares_count: { type: Number, default: 0 },      // Number of shares
-    is_active: { type: Boolean, default: true },     // Whether the post is active or deleted
+    is_active: { type: Boolean, default: true }, 
+    
   },{
     timestamps: true
   });
