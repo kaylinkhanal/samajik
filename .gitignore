@@ -131,7 +131,7 @@ dist
 
 
 
-uploads/avatar/*.png
-uploads/posts/*.png
+**/uploads/avatar/*.png
+**/uploads/posts/*.png
 
 

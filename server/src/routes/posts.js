@@ -8,4 +8,9 @@ const app = Router()
     res.json({msg: "post created"})
   })
 
+  app.get('/posts',async (req, res) => {
+   const data = await Post.find()
+    res.json(data)
+  })
+
 module.exports = app;
