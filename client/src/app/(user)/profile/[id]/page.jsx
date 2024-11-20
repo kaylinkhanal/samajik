@@ -1,15 +1,16 @@
 'use client'
 import UserPost from "@/components/user-post/page";
-import { Profileheader } from "./header";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Profileheader } from "../header";
+import { useParams } from "next/navigation";
 
 const Profile = () => {
-  const { userDetails  } = useSelector(state=>state.user)
+    const params = useParams()
   const [postList, setPostList] = useState([])
   const fetchPost =async ()=>{
-      const { data } = await axios.get(`http://localhost:8080/posts/${userDetails?.user?._id}`)
+      const { data } = await axios.get(`http://localhost:8080/posts/${params.id}`)
       setPostList(data)
   }
 
@@ -18,7 +19,7 @@ const Profile = () => {
   },[])
   return (
     <div>
-      <Profileheader />
+      <Profileheader id={params.id}/>
       <UserPost fetchPost={fetchPost} postList={postList} />
     </div>
   );

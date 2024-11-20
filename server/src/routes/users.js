@@ -30,6 +30,7 @@ const storage = multer.diskStorage({
 UserRoute.post('/register', registerUser)
 UserRoute.post('/login',loginUser)
 UserRoute.get('/users',  findAllUser)
+UserRoute.get('/user',  findAllUser)
 UserRoute.post('/upload-avatar/:id',checkUserExist, upload.single('avatar'), uploadUser)
 UserRoute.get('/users/:id',findUserById)
 UserRoute.delete('/users/:id',deleteUserById )

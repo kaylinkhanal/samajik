@@ -4,19 +4,17 @@ import { useSelector } from "react-redux";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 export default function UploadImages(props) {
-  const {
-    userDetails: { user },
-  } = useSelector((state) => state.user);
+
   return (
     <div className="flex flex-col items-center gap-4">
       <div className="relative group w-32 h-32 rounded-full overflow-hidden">
         <Avatar className="w-full h-full border-4 border-white">
           <AvatarImage
-            src={`${process.env.NEXT_PUBLIC_API_URL}/static/avatar/${user.avatar}`}
+            src={`${process.env.NEXT_PUBLIC_API_URL}/static/avatar/${props.avatar}`}
             className="w-full h-full object-cover bg-slate-500"
           />
           <AvatarFallback>
-            {user.fullName
+            {props.fullName
               .split(" ")
               .map((n) => n[0])
               .join("")}

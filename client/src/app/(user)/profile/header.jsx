@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   MapPin,
@@ -15,26 +15,18 @@ import { setUserDetails } from "@/redux/slices/userSlice";
 import axios from "axios";
 import { formatDateToMonthYear } from "@/lib/utils";
 
-export function Profileheader() {
-  const {
-    userDetails: {
-      user: {
-        _id,
-        fullName,
-        avatar,
-        email,
-        bio,
-        location,
-        website,
-        createdAt,
-        address,
-        jobTitle,
-        relationshipStatus,
-        skills,
-        birthday,
-      },
-    },
-  } = useSelector((state) => state.user);
+export function Profileheader(props) {
+
+  const [fetchedUserDetails, setFetchedUserDetails] = useState([])
+  const getUserDetails =async ()=>{
+      const { data } = await axios.get(`http://localhost:8080/users/${props.id}`)
+      setFetchedUserDetails(data)
+  }
+
+  useEffect(()=>{
+    getUserDetails()
+  },[])
+
   //
   // const {
   //   userDetails: { user },
@@ -42,16 +34,7 @@ export function Profileheader() {
   // console.log("user", user);
   const dispatch = useDispatch();
 
-  const fetchUserDetails = async () => {
-    try {
-      const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/users/${_id}`,
-      );
-      dispatch(setUserDetails(data));
-    } catch (e) {
-      console.log(e);
-    }
-  };
+
   const uploadAvatar = async (e) => {
     const formData = new FormData();
     formData.append("avatar", e.target.files[0]);
@@ -60,12 +43,26 @@ export function Profileheader() {
       { body: formData },
     );
     if (res.status == 200) {
-      fetchUserDetails();
+      getUserDetails();
     }
   };
-  useEffect(() => {
-    fetchUserDetails();
-  }, []);
+
+  if(!fetchedUserDetails?._id) return "loading..."
+  const {
+    _id,
+    fullName,
+    avatar,
+    email,
+    bio,
+    location,
+    website,
+    createdAt,
+    address,
+    jobTitle,
+    relationshipStatus,
+    skills,
+    birthday,
+} = fetchedUserDetails
   return (
     <div className="space-y-4">
       {/* Cover Image */}
@@ -74,7 +71,7 @@ export function Profileheader() {
       {/* Profile Info */}
       <div className="px-4">
         <div className="flex justify-between -mt-20">
-          <UploadImages onChange={uploadAvatar} />
+          <UploadImages onChange={uploadAvatar} avatar={avatar} fullName={fullName}  />
 
           <Button className="bg-orange-500 hover:bg-orange-600">
             Edit Profile
