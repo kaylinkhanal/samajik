@@ -3,8 +3,10 @@ import Link from "next/link"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import navItems from "@/config/navItems";
+import { useSelector } from "react-redux";
 
 export default function SideBar() {
+  const {userDetails} = useSelector(state=>state.user)
   return (
     (
       <aside
@@ -20,7 +22,7 @@ export default function SideBar() {
               {navItems.user.map((item)=>{
                 return (
                   <Link
-                  href={item.link}
+                  href={ item.label == 'Profile' ? (item.link +'/'+ userDetails.user._id) :  item.link}
                   className="flex items-center gap-3 rounded-md px-4 py-2 text-sm font-medium text-muted-foreground dark:text-muted-foreground/80 transition-colors hover:bg-accent hover:text-accent-foreground"
                   prefetch={false}>
                   {item.icon}

@@ -36,14 +36,15 @@ const loginUser = async (req, res) => {
   }
 }
 
-const findAllUser = async (_, res) => {
-  const data = await User.find()
+const findAllUser = async (req, res) => {
+  if(!req.query.startsWith) return res.send([])
+  const data = await User.find({fullName:  { $regex: req.query.startsWith, $options: 'i' } })
   res.send(data)
 }
 
 const findUserById = async (req, res) => {
   const user = await User.findById(req.params.id)
-  res.send({user})
+  res.send(user)
 }
 
 const deleteUserById = async (req, res) => {

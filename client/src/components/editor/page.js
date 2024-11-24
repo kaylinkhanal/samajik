@@ -7,7 +7,7 @@ import UserAvatar from '../avatar';
 import { Button } from '../ui/button';
 import axios from 'axios';
 
-const PostEditor = ({ placeholder }) => {
+const PostEditor = ({ placeholder , fetchPost}) => {
 
     const {userDetails} = useSelector(state=>state.user)
 
@@ -22,26 +22,25 @@ const PostEditor = ({ placeholder }) => {
 	const [content, setContent] = useState('');
     const handleSubmit =async ()=>{
         const { data } = await axios.post(`http://localhost:8080/posts`, {content: content,user:userDetails?.user._id})
-        
+        fetchPost()
     }
 
 
 
 	const config = useMemo(() => ({
 			readonly: false, // all options from https://xdsoft.net/jodit/docs/,
-			placeholder: placeholder || 'Whats on your mind?'
+			placeholder: placeholder || 'Whats on your mind?',
 		}),
 		[placeholder]
 	);
 	return (
         <>
-          <div className='flex flex-col bg-orange-500 rounded-lg'>
-           <span className='text-black font-bold ml-4'> CREATE POST</span>
-            <div className='flex'>
+          <div className='flex  bg-white justify-between rounded-t-md'>
+            <div className='flex items-center'>
             <UserAvatar disabled/>
           {userDetails?.user?.fullName}
             </div>
-  
+			<Button  onClick={handleSubmit} className="bg-orange-500 m-2">POST</Button>
             </div>  
         	<JoditEditor
 			ref={editor}
@@ -51,7 +50,7 @@ const PostEditor = ({ placeholder }) => {
 			onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
 			onChange={newContent => {}}
 		/>
-        <Button  onClick={handleSubmit} className="bg-orange-500 m-2">POST</Button>
+     
 
         </>
 	
