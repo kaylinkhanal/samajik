@@ -1,6 +1,6 @@
 
 const {Router} = require('express')
-const { registerUser, loginUser, uploadUser, findAllUser, findUserById, deleteUserById, updateUserById } = require('../controllers/users');
+const { registerUser, loginUser,getFollowersList, uploadUser,followUser, findAllUser, findUserById, deleteUserById, updateUserById, getFollowingList } = require('../controllers/users');
 const UserRoute = Router()
 const multer  = require('multer');
 const User = require('../models/user');
@@ -30,11 +30,12 @@ const storage = multer.diskStorage({
 UserRoute.post('/register', registerUser)
 UserRoute.post('/login',loginUser)
 UserRoute.get('/users',  findAllUser)
-UserRoute.get('/user',  findAllUser)
 UserRoute.post('/upload-avatar/:id',checkUserExist, upload.single('avatar'), uploadUser)
 UserRoute.get('/users/:id',findUserById)
 UserRoute.delete('/users/:id',deleteUserById )
 UserRoute.put('/users/:id', updateUserById)
 UserRoute.delete('/users/:id', deleteUserById)
-
+UserRoute.put('/follow/:requestedby/:requestedto', followUser)
+UserRoute.get('/followers/:userId', getFollowersList)
+UserRoute.get('/following/:userId', getFollowingList)
 module.exports = UserRoute;

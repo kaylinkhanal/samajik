@@ -47,6 +47,35 @@ const findUserById = async (req, res) => {
   res.send(user)
 }
 
+const getFollowersList = async (req, res) => {
+  const user = await User.findById(req.params.userId).select('followers').populate('followers')
+  res.send(user)
+}
+
+const getFollowingList = async (req, res) => {
+  const user = await User.findById(req.params.userId).select('following').populate('following')
+  res.send(user)
+}
+
+
+
+const followUser = async (req, res) => {
+ const {requestedby, requestedto} = req.params
+
+ const requestedUser = await User.findById(requestedby)
+ requestedUser.following.push(requestedto)
+ requestedUser.save()
+
+ const followRequestedToUser = await User.findById(requestedto)
+ followRequestedToUser.followers.push(requestedby)
+followRequestedToUser.save()
+ 
+
+res.send({msg : "You have started following the user!!"})
+}
+
+
+
 const deleteUserById = async (req, res) => {
   try {
 
@@ -100,5 +129,8 @@ const updateUserById = async (req, res) => {
     findAllUser,
     findUserById,
     deleteUserById,
-    updateUserById
+    updateUserById,
+    followUser,
+    getFollowersList,
+    getFollowingList
   }

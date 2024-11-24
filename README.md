@@ -36,7 +36,7 @@ Samajik is a social networking platform for users to connect, share posts, and i
 -------------------
 - [x] Login/Register
 - [ ] Profile:
-  - [ ] Profile Info
+  - [x] Profile Info
   - [ ] View My Posts
   - [ ] List of Followers
 - [ ] Settings:
@@ -44,7 +44,7 @@ Samajik is a social networking platform for users to connect, share posts, and i
   - [ ] Change Password
   - [ ] Toggle Dark Mode
 - [ ] Home/Feed:
-  - [ ] Post Content (Normal Post)
+  - [x] Post Content (Normal Post)
 - [ ] Friends and Users:
   - [ ] Search Users
   - [ ] Follow Users
