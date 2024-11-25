@@ -14,6 +14,7 @@ import UploadImages from "@/components/ImageUploads/page";
 import { setUserDetails } from "@/redux/slices/userSlice";
 import axios from "axios";
 import { formatDateToMonthYear } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
 
 export function Profileheader(props) {
 
@@ -22,6 +23,7 @@ export function Profileheader(props) {
       const { data } = await axios.get(`http://localhost:8080/users/${props.id}`)
       setFetchedUserDetails(data)
   }
+
 
   useEffect(()=>{
     getUserDetails()
@@ -32,6 +34,8 @@ export function Profileheader(props) {
   //   userDetails: { user },
   // } = useSelector((state) => state.user);
   // console.log("user", user);
+  const { toast } = useToast()
+
   const dispatch = useDispatch();
   const {userDetails } = useSelector(state=>state.user)
 
@@ -50,7 +54,10 @@ export function Profileheader(props) {
 
 
   const handleFollow = async  ()=>{
-   await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/follow/${userDetails?.user?._id}/${props.id}`)
+   const {data} =await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/follow/${userDetails?.user?._id}/${props.id}`)
+  if(data.msg) toast({
+    title: data.msg
+  })
   }
 
 
@@ -158,11 +165,11 @@ export function Profileheader(props) {
             Follow
           </Button>
             <button className="hover:underline">
-              <span className="font-bold">2,456</span>{" "}
+              <span className="font-bold">{fetchedUserDetails.followingCount}</span>{" "}
               <span className="text-muted-foreground">Following</span>
             </button>
             <button className="hover:underline">
-              <span className="font-bold">1,234</span>{" "}
+              <span className="font-bold">{fetchedUserDetails.followersCount}</span>{" "}
               <span className="text-muted-foreground">Followers</span>
             </button>
           </div>
