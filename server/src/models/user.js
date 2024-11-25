@@ -9,6 +9,14 @@ const userSchema = new mongoose.Schema({
   },
   dateOfBirth: { type: Date },
   password: { type: String, required: true },
+  followers: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+    }],
+  following: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+    }],
   phoneNumber: { type: String },
   avatar: { type: String },
   skills: [{ type: String }],  
@@ -35,3 +43,8 @@ const User = mongoose.model('User', userSchema);
 
 
  module.exports  = User
+
+
+
+
+ 

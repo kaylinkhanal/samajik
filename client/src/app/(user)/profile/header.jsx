@@ -33,7 +33,7 @@ export function Profileheader(props) {
   // } = useSelector((state) => state.user);
   // console.log("user", user);
   const dispatch = useDispatch();
-
+  const {userDetails } = useSelector(state=>state.user)
 
   const uploadAvatar = async (e) => {
     const formData = new FormData();
@@ -46,6 +46,21 @@ export function Profileheader(props) {
       getUserDetails();
     }
   };
+
+
+
+  const handleFollow = async  ()=>{
+   await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/follow/${userDetails?.user?._id}/${props.id}`)
+  }
+
+
+
+
+
+
+
+
+
 
   if(!fetchedUserDetails?._id) return "loading..."
   const {
@@ -72,7 +87,7 @@ export function Profileheader(props) {
       <div className="px-4">
         <div className="flex justify-between -mt-20">
           <UploadImages onChange={uploadAvatar} avatar={avatar} fullName={fullName}  />
-
+       
           <Button className="bg-orange-500 hover:bg-orange-600">
             Edit Profile
           </Button>
@@ -139,6 +154,9 @@ export function Profileheader(props) {
           )}
 
           <div className="flex gap-4">
+          <Button onClick={()=>handleFollow()} className="bg-orange-500 hover:bg-orange-600">
+            Follow
+          </Button>
             <button className="hover:underline">
               <span className="font-bold">2,456</span>{" "}
               <span className="text-muted-foreground">Following</span>

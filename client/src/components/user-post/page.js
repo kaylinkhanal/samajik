@@ -7,6 +7,7 @@ import { Button } from '../ui/button';
 import { useSelector } from 'react-redux';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Send } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 var relativeTime = require("dayjs/plugin/relativeTime");
 dayjs.extend(relativeTime);
 const generateTimeDurationStr = (inputDate) => {
@@ -15,6 +16,8 @@ const generateTimeDurationStr = (inputDate) => {
 }
 
 const UserPost = (props) => {
+
+    const router = useRouter()
     const {userDetails} = useSelector(state=>state.user)
 
 const [postId, setPostId] = useState('')
@@ -51,8 +54,15 @@ const [postComments, setPostComments] = useState([])
         {props.postList.map((item,idx)=>{
         return (
             <Card  className="m-2 p-2 bg-white shadow-sm w-[60%]">
+                <div className='flex'>
+                <Avatar onClick={()=>router.push('/profile/'+item?.user?._id)}>
+                                                    <AvatarImage src={`${process.env.NEXT_PUBLIC_API_URL}/static/avatar/${item?.user?.avatar}`} alt="@shadcn" />
+                                                    <AvatarFallback>CN</AvatarFallback>
+                                                    </Avatar>
                 <span className='text-orange-400 m-4 font-mono font-semibold'>{item?.user?.fullName}</span> 
 
+                </div>
+          
                 <div className='m-4 bg-gray-100 p-4'>
 
                 <div  
@@ -76,11 +86,11 @@ const [postComments, setPostComments] = useState([])
                                     {postComments.map((item)=>{
                                         return (
                                             <div className='flex gap-2'>
-                                                      <Avatar>
+                                                      <Avatar onClick={()=>router.push('/profile/'+item?.commented_by?._id)}>
                                                     <AvatarImage src={`${process.env.NEXT_PUBLIC_API_URL}/static/avatar/${item?.commented_by?.avatar}`} alt="@shadcn" />
                                                     <AvatarFallback>CN</AvatarFallback>
                                                     </Avatar>
-                                                <strong>{item?.commented_by?.fullName}</strong>
+                                                <span className='text-orange-800 font-semibold' onClick={()=>router.push('/profile/'+item?.commented_by?._id)}>{item?.commented_by?.fullName}</span>
                                                 {item.content}
                                                 <span className='text-gray-400 text-sm'>
                                                 {generateTimeDurationStr(item.createdAt)}
@@ -94,7 +104,6 @@ const [postComments, setPostComments] = useState([])
                         </div>
               )}
             
-                {userDetails?.user?.fullName}
                <div className='flex gap-4'>
                <textarea className='w-[90%]' ref={(element)=> inputRef.current[idx]= element} 
                     onClick={()=> setPostId(item._id)}
