@@ -35,6 +35,17 @@ const loginUser = async (req, res) => {
     res.status(401).send({ msg: 'invalid credentials!' })
   }
 }
+const changeUserPassword = async (req, res) => {
+  const user = await User.findById(req.params.userId)
+  const isMatched = await bcrypt.compare(req.body.oldPassword, user.password);
+  if (isMatched) {
+    user.password =  await bcrypt.hash(req.body.newPassword, saltRounds);
+    user.save()
+    res.send({msg: 'Password Changed successfully!'})
+  } else {
+    res.status(401).send({ msg: 'Incorrect Password!' })
+  }
+}
 
 const findAllUser = async (req, res) => {
   if(!req.query.startsWith) return res.send([])
@@ -132,5 +143,6 @@ const updateUserById = async (req, res) => {
     updateUserById,
     followUser,
     getFollowersList,
-    getFollowingList
+    getFollowingList,
+    changeUserPassword
   }
