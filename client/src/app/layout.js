@@ -30,6 +30,7 @@ export default function RootLayout({ children }) {
         <TanStackProvider>
         <ReduxProvider>
           {children}
+          
         </ReduxProvider>
         </TanStackProvider>
       </body>
