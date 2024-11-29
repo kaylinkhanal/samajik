@@ -17,63 +17,78 @@ const validationSchema = Yup.object({
 
 export default function LoginPage() {
     const dispatch = useDispatch()
-  const router = useRouter()
-  const formik = useFormik({
-    initialValues: {
-      email: '',
-      password: '',
-    },
-    validationSchema: validationSchema,
-    onSubmit: (values) => {
-      handleSubmit(values)
-    },
-  })
-  const handleSubmit  = async(values)=>{
-    try {
-      const { data } = await axios.post(`http://localhost:8080/login`, values)
-      if (data.isLoggedIn) { router.push("/home") }
-      //send login user data  in redux userSlice
-      dispatch(setUserDetails(data))
-    } catch (err) {
-      console.log("unable to log in", err)
+    const router = useRouter()
+    const formik = useFormik({
+        initialValues: {
+            email: '',
+            password: '',
+        },
+        validationSchema: validationSchema,
+        onSubmit: (values) => {
+            handleSubmit(values)
+        },
+    })
+    
+    const handleSubmit = async (values) => {
+        try {
+            const { data } = await axios.post(`http://localhost:8080/login`, values)
+            if (data.isLoggedIn) { 
+                router.push("/home") 
+            }
+            // send login user data in redux userSlice
+            dispatch(setUserDetails(data))
+        } catch (err) {
+            console.log("unable to log in", err)
+        }
     }
-  }
 
-  return (
+    const handleRegisterRedirect = () => {
+        router.push("/register") // Redirect to the register page
+    }
+
+    return (
+        
         <form onSubmit={formik.handleSubmit}>
-          <CardHeader>
-            <CardTitle className="text-2xl font-bold">Login</CardTitle>
-            <CardDescription>Enter your credentials to access your account</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="Enter your email"
-                {...formik.getFieldProps('email')}
-              />
-              {formik.touched.email && formik.errors.email ? (
-                <div className="text-red-500 text-sm">{formik.errors.email}</div>
-              ) : null}
+            <CardHeader>
+                <CardTitle className="text-2xl font-bold">Login</CardTitle>
+                <CardDescription>Enter your credentials to access your account</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                <div className="space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                        id="email"
+                        type="email"
+                        placeholder="Enter your email"
+                        {...formik.getFieldProps('email')}
+                    />
+                    {formik.touched.email && formik.errors.email ? (
+                        <div className="text-red-500 text-sm">{formik.errors.email}</div>
+                    ) : null}
+                </div>
+                <div className="space-y-2">
+                    <Label htmlFor="password">Password</Label>
+                    <Input
+                        id="password"
+                        type="password"
+                        placeholder="Enter your password"
+                        {...formik.getFieldProps('password')}
+                    />
+                    {formik.touched.password && formik.errors.password ? (
+                        <div className="text-red-500 text-sm">{formik.errors.password}</div>
+                    ) : null}
+                </div>
+            </CardContent>
+            <CardFooter>
+                <Button type="submit" className="w-full">Login</Button>
+            </CardFooter>
+            <div className="mt-4 text-center">
+                <span>Don't have an account? </span>
+                <Button variant="link" onClick={handleRegisterRedirect}>
+                    Register
+                </Button>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Enter your password"
-                {...formik.getFieldProps('password')}
-              />
-              {formik.touched.password && formik.errors.password ? (
-                <div className="text-red-500 text-sm">{formik.errors.password}</div>
-              ) : null}
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button type="submit" className="w-full">Login</Button>
-          </CardFooter>
         </form>
-  )
+       
+    )
 }

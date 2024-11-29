@@ -42,6 +42,9 @@ export default function Register() {
       }
     },
   })
+  const handleLoginRedirect = () => {
+    router.push("/login") // Redirect to the login page
+}
 
   return (
     (
@@ -107,7 +110,14 @@ export default function Register() {
           </CardContent>
           <CardFooter>
             <Button type="submit" className="w-full">Sign Up</Button>
+            <div className="mt-4 text-center">
+                <span>Already have an account? </span>
+                <Button variant="link" onClick={handleLoginRedirect}>
+                    Login
+                </Button>
+            </div>
           </CardFooter>
+          
         </form>
      )
   );
