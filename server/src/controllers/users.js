@@ -38,7 +38,7 @@ const loginUser = async (req, res) => {
 
 const changeUserPassword = async (req, res) => {
   const user = await User.findById(req.params.userId)
-  const isMatched = await bcrypt.compare(req.body.oldPassword, user.password);
+  const isMatched = await bcrypt.compare(req.body.currentPassword, user.password);
   if (isMatched) {
     user.password =  await bcrypt.hash(req.body.newPassword, saltRounds);
     user.save()
@@ -155,5 +155,4 @@ const updateUserById = async (req, res) => {
     getFollowersList,
     getFollowingList,
     changeUserPassword
-
   }

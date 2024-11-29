@@ -51,6 +51,7 @@ Samajik is a social networking platform for users to connect, share posts, and i
   - [x] Comment
   - [ ]  Share
   - [x]   Post
+- [x] Send email to users when someone comments
 - [ ] Global Posts (Explore)
 - [ ] Groups:
   - [ ] Create Groups and Add Users
