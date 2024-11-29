@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
     default: 'Male'
   },
   dateOfBirth: { type: Date },
+
   password: { type: String, required: true },
   followers: [{
     type: mongoose.Schema.Types.ObjectId,
@@ -48,3 +49,5 @@ const User = mongoose.model('User', userSchema);
 
 
  
+
+

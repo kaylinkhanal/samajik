@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useToast } from "@/hooks/use-toast"
 import { setUserDetails } from "@/redux/slices/userSlice"
 import axios from "axios"
 import { useFormik } from 'formik'
@@ -16,7 +17,9 @@ const validationSchema = Yup.object({
 })
 
 export default function LoginPage() {
+
     const dispatch = useDispatch()
+    const {toast} = useToast()
   const router = useRouter()
   const formik = useFormik({
     initialValues: {
@@ -31,10 +34,13 @@ export default function LoginPage() {
   const handleSubmit  = async(values)=>{
     try {
       const { data } = await axios.post(`http://localhost:8080/login`, values)
-      if (data.isLoggedIn) { router.push("/home") }
+        if (data.isLoggedIn) { router.push("/home") }
       //send login user data  in redux userSlice
       dispatch(setUserDetails(data))
     } catch (err) {
+      toast({
+        title: err?.response?.data?.msg
+      })
       console.log("unable to log in", err)
     }
   }
