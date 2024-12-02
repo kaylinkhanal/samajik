@@ -4,9 +4,14 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 import { Button } from "@/components/ui/button"
 import navItems from "@/config/navItems";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
 export default function SideBar() {
+  const router = useRouter()
   const {userDetails} = useSelector(state=>state.user)
+  const handleSetting = ()=>{
+    router.push('./SettingsModal')
+  }
   return (
     (
       <aside
@@ -42,7 +47,7 @@ export default function SideBar() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem>
-                  <SettingsIcon className="h-4 w-4 mr-2 text-orange-500" />
+                  <SettingsIcon className="h-4 w-4 mr-2 text-orange-500"  onClick={handleSetting}/>
                   Settings
                 </DropdownMenuItem>
                 <DropdownMenuItem>

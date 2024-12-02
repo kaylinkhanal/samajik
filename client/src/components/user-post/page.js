@@ -25,7 +25,7 @@ const inputRef = useRef([])
 const [postComments, setPostComments] = useState([])
 
    const   fetchComments = async () => {
-    const {data} = await axios.get(`http://localhost:8080/posts/${postId}/comments`)
+    const {data} = await axios.get(`http://localhost:3000/posts/${postId}/comments`)
     setPostComments(data)
    }
 
@@ -36,7 +36,7 @@ const [postComments, setPostComments] = useState([])
     }
     setPostId(commentPostId)
 
-    const {data} = await axios.post(`http://localhost:8080/posts/${commentPostId}/comments`, {
+    const {data} = await axios.post(`http://localhost:3000/posts/${commentPostId}/comments`, {
         "content": inputRef.current[idx].value,
         "commented_by": userDetails?.user?._id
     })

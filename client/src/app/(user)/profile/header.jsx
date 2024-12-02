@@ -16,10 +16,17 @@ import { setUserDetails } from "@/redux/slices/userSlice";
 import axios from "axios";
 import { formatDateToMonthYear } from "@/lib/utils";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
+import { useParams } from "next/navigation";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 
 export function Profileheader(props) {
+  const params = useParams()
+  console.log(params)
   const [fetchedUserDetails, setFetchedUserDetails] = useState(null);
   const [showFollowing, setShowFollowing] = useState(false);
+  const [followersList, setFollowersList] = useState([])
   const [showFollowers, setShowFollowers] = useState(false);
   const [showEditProfile, setShowEditProfile] = useState(false);
 
@@ -32,9 +39,17 @@ export function Profileheader(props) {
     }
   };
 
-  useEffect(() => {
-    getUserDetails();
-  }, [props.id]);
+
+  useEffect(()=>{
+    getUserDetails()
+  },[])
+
+  //
+  // const {
+  //   userDetails: { user },
+  // } = useSelector((state) => state.user);
+  // console.log("user", user);
+  const { toast } = useToast()
 
   const dispatch = useDispatch();
   const { userDetails } = useSelector((state) => state.user);
@@ -55,18 +70,27 @@ export function Profileheader(props) {
     }
   };
 
-  const handleFollow = async () => {
-    try {
-      await axios.put(
-        `${process.env.NEXT_PUBLIC_API_URL}/follow/${userDetails?.user?._id}/${props.id}`
-      );
-    } catch (error) {
-      console.error("Error following user:", error);
-    }
-  };
+ 
 
-  if (!fetchedUserDetails || !fetchedUserDetails._id) return "loading...";
+  const handleFollow = async  ()=>{
+   const {data} =await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/follow/${userDetails?.user?._id}/${props.id}`)
+  if(data.msg) toast({
+    title: data.msg
+  })
+  }
 
+
+
+
+
+  const getFollowerList = async  ()=>{
+    const {data} =await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/followers/${params.id}`)
+   if(data) setFollowersList(data.followers)
+   }
+
+
+
+  if(!fetchedUserDetails?._id) return "loading..."
   const {
     _id,
     fullName,
@@ -81,6 +105,7 @@ export function Profileheader(props) {
     relationshipStatus,
     skills,
     birthday,
+
   } = fetchedUserDetails;
 
   return (
@@ -184,7 +209,7 @@ export function Profileheader(props) {
             <Dialog open={showFollowing} onOpenChange={setShowFollowing}>
               <DialogTrigger asChild>
                 <button className="hover:underline">
-                  <span className="font-bold">0</span>{" "}
+                  <span className="font-bold">{fetchedUserDetails.followingCount}</span>{" "}
                   <span className="text-muted-foreground">Following</span>
                 </button>
               </DialogTrigger>
@@ -199,8 +224,8 @@ export function Profileheader(props) {
             </Dialog>
             <Dialog open={showFollowers} onOpenChange={setShowFollowers}>
               <DialogTrigger asChild>
-                <button className="hover:underline">
-                  <span className="font-bold">0</span>{" "}
+                <button onClick={getFollowerList} className="hover:underline">
+                  <span className="font-bold">{fetchedUserDetails.followersCount}</span>{" "}
                   <span className="text-muted-foreground">Followers</span>
                 </button>
               </DialogTrigger>
@@ -209,7 +234,17 @@ export function Profileheader(props) {
                   <DialogTitle>Followers</DialogTitle>
                 </DialogHeader>
                 <div className="py-4">
-                
+                 { followersList.map((item)=>{
+                    return (
+                      <div className='flex'>
+                      <Avatar className='w-8'>
+                          <AvatarImage src={`${process.env.NEXT_PUBLIC_API_URL}/static/avatar/${item?.avatar}`} alt="@shadcn" />
+                          <AvatarFallback>{item.fullName[0]?.toUpperCase()}</AvatarFallback>
+                        </Avatar>
+                          <span>{item.fullName}</span>   
+                      </div>
+                    )
+                  })}
                 </div>
               </DialogContent>
             </Dialog>

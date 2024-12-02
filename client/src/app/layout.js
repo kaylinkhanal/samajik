@@ -2,6 +2,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import TanStackProvider from "@/provider/TanStackProvider";
 import ReduxProvider from "@/provider/ReduxProvider";
+import { Toaster } from "@/components/ui/toaster";
 
 
 const geistSans = localFont({
@@ -30,6 +31,7 @@ export default function RootLayout({ children }) {
         <TanStackProvider>
         <ReduxProvider>
           {children}
+          <Toaster/>
         </ReduxProvider>
         </TanStackProvider>
       </body>

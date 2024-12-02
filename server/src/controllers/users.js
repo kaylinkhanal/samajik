@@ -36,6 +36,19 @@ const loginUser = async (req, res) => {
   }
 }
 
+const changeUserPassword = async (req, res) => {
+  const user = await User.findById(req.params.userId)
+  const isMatched = await bcrypt.compare(req.body.currentPassword, user.password);
+  if (isMatched) {
+    user.password =  await bcrypt.hash(req.body.newPassword, saltRounds);
+    user.save()
+    res.send({msg: 'Password Changed successfully!'})
+  } else {
+    res.status(401).send({ msg: 'Incorrect Password!' })
+  }
+}
+
+
 const findAllUser = async (req, res) => {
   if(!req.query.startsWith) return res.send([])
   const data = await User.find({fullName:  { $regex: req.query.startsWith, $options: 'i' } })
@@ -43,8 +56,12 @@ const findAllUser = async (req, res) => {
 }
 
 const findUserById = async (req, res) => {
-  const user = await User.findById(req.params.id)
-  res.send(user)
+  const user = await User.findById(req.params.id).lean()
+  res.send({
+    ...user,
+    followersCount: user.followers.length,
+    followingCount: user.following.length
+  })
 }
 
 const getFollowersList = async (req, res) => {
@@ -56,6 +73,7 @@ const getFollowingList = async (req, res) => {
   const user = await User.findById(req.params.userId).select('following').populate('following')
   res.send(user)
 }
+
 
 
 
@@ -73,6 +91,9 @@ followRequestedToUser.save()
 
 res.send({msg : "You have started following the user!!"})
 }
+
+
+
 
 
 
@@ -132,5 +153,6 @@ const updateUserById = async (req, res) => {
     updateUserById,
     followUser,
     getFollowersList,
-    getFollowingList
+    getFollowingList,
+    changeUserPassword
   }

@@ -1,6 +1,6 @@
 
 const {Router} = require('express')
-const { registerUser, loginUser,getFollowersList, uploadUser,followUser, findAllUser, findUserById, deleteUserById, updateUserById, getFollowingList } = require('../controllers/users');
+const { registerUser, loginUser,getFollowersList, uploadUser,followUser, findAllUser, findUserById, deleteUserById, updateUserById, getFollowingList, getFollowersFollowingCount, changeUserPassword } = require('../controllers/users');
 const UserRoute = Router()
 const multer  = require('multer');
 const User = require('../models/user');
@@ -38,4 +38,8 @@ UserRoute.delete('/users/:id', deleteUserById)
 UserRoute.put('/follow/:requestedby/:requestedto', followUser)
 UserRoute.get('/followers/:userId', getFollowersList)
 UserRoute.get('/following/:userId', getFollowingList)
+UserRoute.patch('/change-password/:userId', changeUserPassword)
+
+
+
 module.exports = UserRoute;

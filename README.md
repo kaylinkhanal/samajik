@@ -35,20 +35,23 @@ Samajik is a social networking platform for users to connect, share posts, and i
 #### Phase 1:
 -------------------
 - [x] Login/Register
-- [ ] Profile:
+- [x] Profile:
   - [x] Profile Info
-  - [ ] View My Posts
-  - [ ] List of Followers
+  - [x] View My Posts
+  - [x] List of Followers
 - [ ] Settings:
   - [ ] Edit User Details
-  - [ ] Change Password
-  - [ ] Toggle Dark Mode
+  - [x] Change Password
 - [ ] Home/Feed:
   - [x] Post Content (Normal Post)
-- [ ] Friends and Users:
-  - [ ] Search Users
-  - [ ] Follow Users
-  - [ ] Like, Comment, Share, Post
+- [x] Friends and Users:
+  - [x] Search Users
+  - [x] Follow Users
+  - [ ] Like,
+  - [x] Comment
+  - [ ]  Share
+  - [x]   Post
+- [x] Send email to users when someone comments
 - [ ] Global Posts (Explore)
 - [ ] Groups:
   - [ ] Create Groups and Add Users
@@ -63,6 +66,7 @@ Samajik is a social networking platform for users to connect, share posts, and i
 - [ ] Schedule Messages
 - [ ] Payments Integration
 - [ ] Save Post
+- [ ] Toggle Dark Mode
 
 -------------
 

@@ -17,6 +17,15 @@ export default function UserAvatar({disabled}) {
   const dispatch = useDispatch()
   const router = useRouter()
   const {userDetails} = useSelector(state=>state.user)
+  const handleSetting = ()=>{
+    router.push('./settingsModal')
+  }
+  const handleChangePassword = ()=>{
+    router.push('/changePassword')
+  }
+  const handleProfile = ()=>{
+    router.push('/profile')
+  }
 
   const handleLogout = ()=>{
     dispatch(setLogout())
@@ -50,17 +59,17 @@ export default function UserAvatar({disabled}) {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={handleProfile}>
           Profile
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={handleChangePassword}>
           Change Password
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={handleSetting}>
           Settings
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleLogout}>
+        <DropdownMenuItem onC lick={handleLogout}>
           Log out
         </DropdownMenuItem>
       </DropdownMenuContent>
