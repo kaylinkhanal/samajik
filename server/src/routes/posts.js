@@ -49,8 +49,9 @@ const app = Router()
   })
 
   app.get('/posts',async (req, res) => {
-   const data = await Post.find().populate("user")
-    res.json(data)
+    const totalCount = await Post.countDocuments()
+   const posts = await Post.find().populate("user").limit(5).skip(req.query.page*5-5)
+    res.json({posts, totalCount})
   })
 
   app.get('/posts/:userId',async (req, res) => {
@@ -83,4 +84,7 @@ const app = Router()
    
 
 module.exports = app;
+
+
+
 

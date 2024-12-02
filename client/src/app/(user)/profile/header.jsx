@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,15 +15,29 @@ import UploadImages from "@/components/ImageUploads/page";
 import { setUserDetails } from "@/redux/slices/userSlice";
 import axios from "axios";
 import { formatDateToMonthYear } from "@/lib/utils";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import { useParams } from "next/navigation";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 
 export function Profileheader(props) {
+  const params = useParams()
+  console.log(params)
+  const [fetchedUserDetails, setFetchedUserDetails] = useState(null);
+  const [showFollowing, setShowFollowing] = useState(false);
+  const [followersList, setFollowersList] = useState([])
+  const [showFollowers, setShowFollowers] = useState(false);
+  const [showEditProfile, setShowEditProfile] = useState(false);
 
-  const [fetchedUserDetails, setFetchedUserDetails] = useState([])
-  const getUserDetails =async ()=>{
-      const { data } = await axios.get(`http://localhost:8080/users/${props.id}`)
-      setFetchedUserDetails(data)
-  }
+  const getUserDetails = async () => {
+    try {
+      const { data } = await axios.get(`http://localhost:8080/users/${props.id}`);
+      setFetchedUserDetails(data);
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+    }
+  };
 
 
   useEffect(()=>{
@@ -37,21 +52,25 @@ export function Profileheader(props) {
   const { toast } = useToast()
 
   const dispatch = useDispatch();
-  const {userDetails } = useSelector(state=>state.user)
+  const { userDetails } = useSelector((state) => state.user);
 
   const uploadAvatar = async (e) => {
     const formData = new FormData();
     formData.append("avatar", e.target.files[0]);
-    const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/upload-avatar/${_id}`,
-      { body: formData },
-    );
-    if (res.status == 200) {
-      getUserDetails();
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/upload-avatar/${fetchedUserDetails?._id}`,
+        { body: formData }
+      );
+      if (res.status === 200) {
+        getUserDetails();
+      }
+    } catch (error) {
+      console.error("Error uploading avatar:", error);
     }
   };
 
-
+ 
 
   const handleFollow = async  ()=>{
    const {data} =await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/follow/${userDetails?.user?._id}/${props.id}`)
@@ -64,8 +83,10 @@ export function Profileheader(props) {
 
 
 
-
-
+  const getFollowerList = async  ()=>{
+    const {data} =await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/followers/${params.id}`)
+   if(data) setFollowersList(data.followers)
+   }
 
 
 
@@ -84,7 +105,9 @@ export function Profileheader(props) {
     relationshipStatus,
     skills,
     birthday,
-} = fetchedUserDetails
+
+  } = fetchedUserDetails;
+
   return (
     <div className="space-y-4">
       {/* Cover Image */}
@@ -93,17 +116,33 @@ export function Profileheader(props) {
       {/* Profile Info */}
       <div className="px-4">
         <div className="flex justify-between -mt-20">
-          <UploadImages onChange={uploadAvatar} avatar={avatar} fullName={fullName}  />
-       
-          <Button className="bg-orange-500 hover:bg-orange-600">
-            Edit Profile
-          </Button>
+          <UploadImages
+            onChange={uploadAvatar}
+            avatar={fetchedUserDetails?.avatar}
+            fullName={fetchedUserDetails?.fullName}
+          />
+
+          <Dialog open={showEditProfile} onOpenChange={setShowEditProfile}>
+            <DialogTrigger asChild>
+              <Button className="bg-orange-500 hover:bg-orange-600">
+                Edit Profile
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Edit Profile</DialogTitle>
+              </DialogHeader>
+              <div className="py-4">
+                {/* Blank content for Edit Profile popup */}
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
 
         <div className="mt-4 space-y-2">
           <div>
             <h1 className="text-2xl font-bold">{fullName}</h1>
-            <p className="text-muted-foreground">@{email.split("@")[0]}</p>
+            <p className="text-muted-foreground">@{email?.split("@")[0]}</p>
           </div>
 
           <div className="flex flex-wrap gap-4 text-muted-foreground">
@@ -161,20 +200,58 @@ export function Profileheader(props) {
           )}
 
           <div className="flex gap-4">
-          <Button onClick={()=>handleFollow()} className="bg-orange-500 hover:bg-orange-600">
-            Follow
-          </Button>
-            <button className="hover:underline">
-              <span className="font-bold">{fetchedUserDetails.followingCount}</span>{" "}
-              <span className="text-muted-foreground">Following</span>
-            </button>
-            <button className="hover:underline">
-              <span className="font-bold">{fetchedUserDetails.followersCount}</span>{" "}
-              <span className="text-muted-foreground">Followers</span>
-            </button>
+            <Button
+              onClick={() => handleFollow()}
+              className="bg-orange-500 hover:bg-orange-600"
+            >
+              Follow
+            </Button>
+            <Dialog open={showFollowing} onOpenChange={setShowFollowing}>
+              <DialogTrigger asChild>
+                <button className="hover:underline">
+                  <span className="font-bold">{fetchedUserDetails.followingCount}</span>{" "}
+                  <span className="text-muted-foreground">Following</span>
+                </button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Following</DialogTitle>
+                </DialogHeader>
+                <div className="py-4">
+                  
+                </div>
+              </DialogContent>
+            </Dialog>
+            <Dialog open={showFollowers} onOpenChange={setShowFollowers}>
+              <DialogTrigger asChild>
+                <button onClick={getFollowerList} className="hover:underline">
+                  <span className="font-bold">{fetchedUserDetails.followersCount}</span>{" "}
+                  <span className="text-muted-foreground">Followers</span>
+                </button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Followers</DialogTitle>
+                </DialogHeader>
+                <div className="py-4">
+                 { followersList.map((item)=>{
+                    return (
+                      <div className='flex'>
+                      <Avatar className='w-8'>
+                          <AvatarImage src={`${process.env.NEXT_PUBLIC_API_URL}/static/avatar/${item?.avatar}`} alt="@shadcn" />
+                          <AvatarFallback>{item.fullName[0]?.toUpperCase()}</AvatarFallback>
+                        </Avatar>
+                          <span>{item.fullName}</span>   
+                      </div>
+                    )
+                  })}
+                </div>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
       </div>
     </div>
   );
 }
+

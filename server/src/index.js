@@ -4,6 +4,8 @@ const UserRoute = require('./routes/users')
 const ProductRoute = require('./routes/products')
 const CategoryRoute = require('./routes/categories')
 const PostRoute = require('./routes/posts')
+const hotelRoute = require('./routes/hotel')
+
 
 const cors = require('cors')
 const connection = require('./db/connection')
@@ -22,6 +24,7 @@ app.use(UserRoute)
 app.use(ProductRoute)
 app.use(PostRoute)
 app.use(CategoryRoute)
+app.use(hotelRoute)
 
 app.listen(port, ()=>{
     console.log("server is started in port" + port)
